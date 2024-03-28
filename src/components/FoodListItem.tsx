@@ -34,7 +34,7 @@ const FoodListItem = ({item}: FoodListItemProps) => {
 
 const styles = StyleSheet.create({
   foodListItemContainer: {
-    backgroundColor: 'gainsboro',
+    backgroundColor: '#f6f6f8',
     padding: 10,
     borderRadius: 5,
     flexDirection: 'row',
