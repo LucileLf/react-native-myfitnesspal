@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Button } from 'react-native'
+import { View, Text, FlatList, Button, StyleSheet } from 'react-native'
 import { Link } from 'expo-router'
 import FoodListItem from '../components/FoodListItem'
 
@@ -19,9 +19,16 @@ const foodItems = [
 
 export default function HomeScreen() {
   return(
-    <View style={{ backgroundColor: 'white', flex: 1, padding: 10, gap: 10 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={{ fontSize: 16, fontWeight: '500', flex: 1, color: 'dimgray'}}>Food diary</Text>
+    <View style={styles.container}>
+
+      <View style={styles.headerRow}>
+        <Text style={styles.subtitle}>Calories</Text>
+        <Text>1770 - 365 = 1692</Text>
+      </View>
+
+
+      <View style={styles.headerRow}>
+        <Text style={styles.subtitle}>Food diary</Text>
         <Link href='/search' asChild>
           <Button title='ADD FOOD' />
         </Link>
@@ -34,3 +41,23 @@ export default function HomeScreen() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+    padding: 10,
+    gap: 10
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  subtitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
+    color: 'dimgray'
+  }
+})
