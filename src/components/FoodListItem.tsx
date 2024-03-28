@@ -4,10 +4,8 @@ import { AntDesign } from '@expo/vector-icons'
 
 type Item = {
   label: string;
-  servingSize: number;
-  servingSizeUnit: string;
   brand: string;
-  cal: number
+  nutrients: {ENERC_KCAL: number}
 }
 
 
