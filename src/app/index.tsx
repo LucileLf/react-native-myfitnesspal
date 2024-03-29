@@ -1,23 +1,52 @@
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Button, StyleSheet, ActivityIndicator } from 'react-native'
 import { Link } from 'expo-router'
-import FoodListItem from '../components/FoodListItem'
+import FoodLogListItem from '../components/FoodLogListItem'
+import { gql, useQuery } from '@apollo/client'
+import dayjs from 'dayjs'
 
+const query = gql`
+  query foodLogsForDate($date: Date!, $user_id: String!) {
+    foodLogsForDate(date: $date, user_id: $user_id) {
+      label
+      kcal
+    }
+  }
+`
 
-const foodItems = [
-  {
-  label: "Pizza",
-  brand: "Dominos",
-  nutrients: {ENERC_KCAL: 180} ,
-},
-{
-  label: "Apple",
-  brand: "Dominos",
-  nutrients: {ENERC_KCAL: 54} ,
-}
-]
+// const foodItems = [
+//   {
+//   label: "Pizza",
+//   brand: "Dominos",
+//   nutrients: {ENERC_KCAL: 180} ,
+//   },
+//   {
+//     label: "Apple",
+//     brand: "Dominos",
+//     nutrients: {ENERC_KCAL: 54} ,
+//   }
+// ]
 
 
 export default function HomeScreen() {
+  const user_id = 'dabdoubeh';
+  const { data, loading, error } = useQuery(query, {
+    variables: {
+      date: dayjs().format('YYYY-MM-DD'),
+      user_id,
+    },
+  })
+
+  if (loading) {
+    return <ActivityIndicator />
+  }
+
+  if (error) {
+    return <Text>Failed to fetch data</Text>
+  }
+
+  console.log(data.foodLogsForDate);
+  const foodItems = data.foodLogsForDate;
+
   return(
     <View style={styles.container}>
 
@@ -28,16 +57,18 @@ export default function HomeScreen() {
 
 
       <View style={styles.headerRow}>
-        <Text style={styles.subtitle}>Food diary</Text>
+        <Text style={styles.subtitle}>Today's food</Text>
         <Link href='/search' asChild>
           <Button title='ADD FOOD' />
         </Link>
       </View>
+
       <FlatList
       data={foodItems}
       contentContainerStyle={{ gap: 5 }}
-      renderItem={({ item })=> <FoodListItem item={item}/>}
+      renderItem={({ item })=> <FoodLogListItem item={item}/>}
       />
+
     </View>
   )
 }

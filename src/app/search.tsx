@@ -30,7 +30,7 @@ export default function SearchScreen() {
   const [runSearch ,{data, loading, error}] = useLazyQuery(query)
 
   const performSearch = () => {
-    console.warn("searching for: ", searchInput);
+    // console.warn("searching for: ", searchInput);
     runSearch({variables: { ingr: searchInput }});
     setSearchInput("")
   }
