@@ -47,6 +47,11 @@ export default function HomeScreen() {
   console.log(data.foodLogsForDate);
   const foodItems = data.foodLogsForDate;
 
+  let kCalArray = []
+  foodItems.map((item)=>kCalArray.push(item.kcal));
+  const totalKcal = kCalArray.reduce((acc, current) => acc + current, 0);
+  console.log(totalKcal);
+
   return(
     <View style={styles.container}>
 
@@ -68,6 +73,8 @@ export default function HomeScreen() {
       contentContainerStyle={{ gap: 5 }}
       renderItem={({ item })=> <FoodLogListItem item={item}/>}
       />
+
+      <Text>TOTAL: {totalKcal} cal</Text>
 
     </View>
   )

@@ -1,5 +1,5 @@
-import React from 'react'
-import {Text, View, StyleSheet, Pressable} from 'react-native'
+import React, { useState } from 'react'
+import {Text, View, StyleSheet, Pressable, ActivityIndicator} from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { gql, useMutation } from '@apollo/client'
 import { useRouter } from 'expo-router'
@@ -31,6 +31,8 @@ const mutation = gql`
 `
 
 const FoodListItem = ({item}) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [ logFood, {data, loading, error} ]= useMutation(mutation, {
     // options
     refetchQueries: [ // invalidate query so the food log includes new item
@@ -42,7 +44,7 @@ const FoodListItem = ({item}) => {
 
   const onPlusPressed = async () => {
     console.log(`onplluspressed - adding ${item.label}`);
-
+    setIsLoading(true);
     await logFood({
       variables: {
         food_id: item.foodId,
@@ -51,6 +53,7 @@ const FoodListItem = ({item}) => {
         user_id: "dabdoubeh"
       }
     })
+    // setIsLoading(false)
     router.back();
   }
 
@@ -61,8 +64,11 @@ const FoodListItem = ({item}) => {
         <Text style={{fontWeight: 'bold', fontSize: 16 }}>{item.label}</Text>
         <Text style={{color: 'dimgray'}}>{item.nutrients.ENERC_KCAL} cal{item.brand && `, ${item.brand}` }</Text>
       </View>
-
-      <AntDesign  onPress={onPlusPressed} name='pluscircleo' size={24} color='royalblue' />
+      { isLoading ?
+        <ActivityIndicator />
+        :
+        <AntDesign  onPress={onPlusPressed} name='pluscircleo' size={24} color='royalblue' />
+      }
 
   </View>
 
